@@ -3,7 +3,7 @@ from pathlib import Path
 from parser import parse_catalog
 
 
-html = Path("sample_catalog.html").read_text(
+html = Path("sample_catalog_clean.html").read_text(
     encoding="utf-8"
 )
 
