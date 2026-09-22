@@ -1,68 +1,59 @@
 <!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8"><title>Algoma University Course Catalog (Sample)</title><style data-glasp-print="rule">@media print{[data-glasp-print="hide"]{display:none !important}}</style></head>
-<body data-new-gr-c-s-check-loaded="8.937.0" data-gr-ext-installed="">
-<h1>Course Catalog</h1>
-<p>
-  This is a <strong>sample</strong> catalog for local testing only.<br>
-  The auto-grader uses a <em>different</em> catalog with different course codes.
-  Your HTML parser must be general — do not hardcode specific course codes or titles.
-</p>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Course Catalog</title>
+</head>
+<body>
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>Course Code</th>
-      <th>Title</th>
-      <th>Credits</th>
-      <th>Prerequisites</th>
-      <th>Cross-listed</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>COSC 1047</td>
-      <td>Programming for Business</td>
-      <td>3</td>
-      <td>None</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>COSC 2006</td>
-      <td>Programming Fundamentals I</td>
-      <td>3</td>
-      <td>None</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>COSC 2007</td>
-      <td>Programming Fundamentals II</td>
-      <td>3</td>
-      <td>COSC 2006</td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>COSC 3506</td>
-      <td>Software Systems Development</td>
-      <td>3</td>
-      <td>COSC 2007</td>
-      <td>ITEC 3506</td>
-    </tr>
-    <tr>
-      <td>ITEC 3506</td>
-      <td>Software Systems Development</td>
-      <td>3</td>
-      <td>COSC 2007</td>
-      <td>COSC 3506</td>
-    </tr>
-  </tbody>
+<table>
+    <thead>
+        <tr>
+            <th>Course Code</th>
+            <th>Title</th>
+            <th>Credits</th>
+            <th>Prerequisites</th>
+            <th>Cross-listed</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>COSC 1047</td>
+            <td>Programming for Business</td>
+            <td>3</td>
+            <td>None</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>COSC 2006</td>
+            <td>Programming Fundamentals I</td>
+            <td>3</td>
+            <td>None</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>COSC 2007</td>
+            <td>Programming Fundamentals II</td>
+            <td>3</td>
+            <td>COSC 2006</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>COSC 3506</td>
+            <td>Software Systems Development</td>
+            <td>3</td>
+            <td>COSC 2007</td>
+            <td>ITEC 3506</td>
+        </tr>
+        <tr>
+            <td>ITEC 3506</td>
+            <td>Software Systems Development</td>
+            <td>3</td>
+            <td>COSC 2007</td>
+            <td>COSC 3506</td>
+        </tr>
+    </tbody>
 </table>
 
-<p>
-  <strong>How to test locally:</strong><br>
-  <code>curl -X POST -F "file=@sample_catalog.html;type=text/html" http://localhost:8000/api/v1/admin/catalog/import</code><br>
-  <code>curl http://localhost:8000/api/v1/catalog/courses/COSC3506</code>
-</p>
-
-
-<readwise-tooltip-container></readwise-tooltip-container><div class="glasp-extension-toaster glasp-extension-toaster--youtube-summary" data-glasp-print="hide" dir="ltr" style="display: block; width: 320px; margin: unset; padding: unset; border: unset; border-radius: unset; outline: unset; background-color: unset; box-shadow: unset; position: fixed; top: 40px; right: 24px; z-index: 9999;"></div></body><div class="glasp-extension" data-glasp-print="hide" dir="ltr" style="display: block; width: unset; margin: unset; padding: unset; border: unset; border-radius: unset; outline: unset; background-color: unset; box-shadow: unset; position: fixed; bottom: 16px; right: 16px; z-index: 9999;" id="glasp-web-summary-button"><div class="glasp-extension" style="font-family: inherit;"></div></div><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
+</body>
+</html>
