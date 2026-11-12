@@ -1,12 +1,14 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 
 from parser import parse_catalog
+from students import router as students_router
 
 
 app = FastAPI(
     title="Course Registration API",
-    version="1.0.0"
+    version="2.0.0"
 )
+app.include_router(students_router)
 
 
 # Application memory.
