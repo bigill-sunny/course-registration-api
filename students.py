@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from pydantic import BaseModel, StringConstraints
 
-
 router = APIRouter(prefix="/api/v1/students", tags=["students"])
 NonEmptyText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 PAST_STATUSES = {"Completed", "In-Progress", "Attempted"}
@@ -80,9 +79,15 @@ def parse_history(html: str) -> list[PastCourse]:
             key = (code, term)
             rank = (*grade_rank(grade), credits_earned)
             if key not in best or rank > best[key][0]:
-                best[key] = (rank, PastCourse(
-                    course_code=code, term=term, credits_earned=credits_earned, status=status
-                ))
+                best[key] = (
+                    rank,
+                    PastCourse(
+                        course_code=code,
+                        term=term,
+                        credits_earned=credits_earned,
+                        status=status,
+                    ),
+                )
 
     if not transcript_found:
         raise ValueError("No transcript table found")
@@ -104,7 +109,9 @@ def import_history(student_id: str, file: UploadFile = File(...)):
     try:
         history = parse_history(contents.decode("utf-8-sig"))
     except UnicodeDecodeError as error:
-        raise HTTPException(status_code=400, detail="Transcript must be UTF-8") from error
+        raise HTTPException(
+            status_code=400, detail="Transcript must be UTF-8"
+        ) from error
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error)) from error
 
@@ -156,4 +163,6 @@ def delete_plan(student_id: str):
 def get_profile(student_id: str) -> Profile:
     with students_lock:
         student = find_student(student_id)
-        return Profile(student_id=student_id, history=student.history, plan=student.plan)
+        return Profile(
+            student_id=student_id, history=student.history, plan=student.plan
+        )

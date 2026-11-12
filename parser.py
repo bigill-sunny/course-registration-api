@@ -8,6 +8,10 @@ def normalize_course_code(value: str) -> str:
     return re.sub(r"\s+", "", value.strip())
 
 
+def course_key(value: str) -> str:
+    return re.sub(r"[\s-]", "", value).upper()
+
+
 def extract_course_codes(value: str) -> list[str]:
     """
     Extract course codes from prerequisite or cross-listed text.
@@ -22,15 +26,9 @@ def extract_course_codes(value: str) -> list[str]:
     if not value or value.strip().lower() == "none":
         return []
 
-    matches = re.findall(
-        r"\b[A-Za-z]{2,10}\s*\d{3,4}\b",
-        value
-    )
+    matches = re.findall(r"\b[A-Za-z]{2,10}\s*-?\s*\d{3,4}\b", value)
 
-    return [
-        normalize_course_code(code)
-        for code in matches
-    ]
+    return [normalize_course_code(code) for code in matches]
 
 
 def parse_catalog(html: str) -> list[dict]:
@@ -50,15 +48,11 @@ def parse_catalog(html: str) -> list[dict]:
         raise ValueError("Catalog table has no header.")
 
     headers = [
-        header.get_text(" ", strip=True).lower()
-        for header in header_row.find_all("th")
+        header.get_text(" ", strip=True).lower() for header in header_row.find_all("th")
     ]
 
     # Map normalized header names to their column positions.
-    header_map = {
-        header: index
-        for index, header in enumerate(headers)
-    }
+    header_map = {header: index for index, header in enumerate(headers)}
 
     required_headers = [
         "course code",
@@ -70,9 +64,7 @@ def parse_catalog(html: str) -> list[dict]:
 
     for required_header in required_headers:
         if required_header not in header_map:
-            raise ValueError(
-                f"Missing required catalog column: {required_header}"
-            )
+            raise ValueError(f"Missing required catalog column: {required_header}")
 
     courses = []
 
@@ -95,40 +87,29 @@ def parse_catalog(html: str) -> list[dict]:
             cells[header_map["course code"]].get_text(" ", strip=True)
         )
 
-        title = cells[header_map["title"]].get_text(
+        title = cells[header_map["title"]].get_text(" ", strip=True)
+
+        credits_text = cells[header_map["credits"]].get_text(" ", strip=True)
+
+        prerequisites_text = cells[header_map["prerequisites"]].get_text(
             " ", strip=True
         )
 
-        credits_text = cells[header_map["credits"]].get_text(
-            " ", strip=True
-        )
-
-        prerequisites_text = cells[
-            header_map["prerequisites"]
-        ].get_text(" ", strip=True)
-
-        cross_listed_text = cells[
-            header_map["cross-listed"]
-        ].get_text(" ", strip=True)
+        cross_listed_text = cells[header_map["cross-listed"]].get_text(" ", strip=True)
 
         try:
             credits = int(credits_text)
         except ValueError:
             raise ValueError(
-                f"Invalid credits value for {course_code}: "
-                f"{credits_text}"
+                f"Invalid credits value for {course_code}: " f"{credits_text}"
             )
 
         course = {
             "course_code": course_code,
             "title": title,
             "credits": credits,
-            "prerequisites": extract_course_codes(
-                prerequisites_text
-            ),
-            "cross_listed": extract_course_codes(
-                cross_listed_text
-            ),
+            "prerequisites": extract_course_codes(prerequisites_text),
+            "cross_listed": extract_course_codes(cross_listed_text),
         }
 
         courses.append(course)
